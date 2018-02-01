@@ -1,11 +1,11 @@
 package main;
 
-import logicc.Hashe;
+import logicc.LoginManager;
 
 public class Main {
 
 	public static void main(String[] args) {
-		Hashe.run();
+		LoginManager.run();
 
 	}
 
