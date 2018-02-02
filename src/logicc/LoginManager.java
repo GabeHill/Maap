@@ -2,6 +2,7 @@ package logicc;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import lib.ConsoleIO;
@@ -15,10 +16,21 @@ public class LoginManager {
 
 	private static HashMap<Credential, User> assignMap() {
 		final List<String> pieces = getFileData();
+		final List<String> spliteds = new LinkedList<>();
+		final int siz = pieces.size();
+		for (int i = 0; i < siz; i++) {
+			final String[] s = pieces.get(i).split("[;\\\n]");
+			for (final String string : s) {
+				if (!string.equals("") && !string.equals(" ")) {
+					spliteds.add(string);
+					System.out.println(string);
+				}
+			}
+		}
 		final HashMap<Credential, User> temp = new HashMap<>();
-		for (int i = 0; i < pieces.size(); i += 5) {
-			final Credential f = new Credential(pieces.get(i), pieces.get(i + 1));
-			final User u = new User(pieces.get(i + 2), pieces.get(i + 3), pieces.get(i + 4));
+		for (int i = 0; i < spliteds.size(); i += 5) {
+			final Credential f = new Credential(spliteds.get(i), spliteds.get(i + 1));
+			final User u = new User(spliteds.get(i + 2), spliteds.get(i + 3), spliteds.get(i + 4));
 			temp.put(f, u);
 		}
 		return temp;
