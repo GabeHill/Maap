@@ -19,11 +19,10 @@ public class LoginManager {
 		final List<String> spliteds = new LinkedList<>();
 		final int siz = pieces.size();
 		for (int i = 0; i < siz; i++) {
-			final String[] s = pieces.get(i).split("[;\\\n]");
+			final String[] s = pieces.get(i).split("[;;\\\n]");
 			for (final String string : s) {
 				if (!string.equals("") && !string.equals(" ")) {
 					spliteds.add(string);
-					System.out.println(string);
 				}
 			}
 		}
