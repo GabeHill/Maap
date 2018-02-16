@@ -1,6 +1,7 @@
 package logicc;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -64,32 +65,46 @@ public class Manager {
 	}
 
 	private static void removeCard() {
-		final String[] s = (String[]) cards.keySet().toArray();
-		final String[] f = (String[]) cards.values().toArray();
-		for (int i = 0; i < cards.size();) {
-			ConsoleIO.printLn((++i) + ": " + s[i] + ": " + f[i]);
+		final ArrayList<String> s = new ArrayList<>();
+		cards.keySet().forEach(k -> s.add(k));
+
+		final ArrayList<String> f = new ArrayList<>();
+		cards.values().forEach(k -> f.add(k));
+		if (s.size() < 1 || f.size() < 1) {
+			ConsoleIO.printLn("No cards available.");
+		} else {
+
+			for (int i = 0; i < cards.size();) {
+				ConsoleIO.printLn((i + 1) + ": " + s.get(i) + ": " + f.get(i));
+				++i;
+			}
+			final int in = ConsoleIO.promptForInt("Which card would you like to remove?", 1, cards.size());
+			cards.remove(s.get(in - 1));
 		}
-		final int in = ConsoleIO.promptForInt("Which card would you like to remove?", 1, cards.size());
-		cards.remove(s[in]);
 	}
 
 	private static void review() {
-		boolean cont = true;
-		final String[] s = (String[]) cards.keySet().toArray();
+		final ArrayList<String> s = new ArrayList<>();
+		cards.keySet().forEach(k -> s.add(k));
+		if (s.size() <= 0) {
+			ConsoleIO.printLn("No cards available.");
+		} else {
+			boolean cont = true;
+			;
 
-		do {
-			final int f = (int) (Math.random() * s.length);
-			ConsoleIO.printLn(s[f]);
+			do {
+				final int f = (int) (Math.random() * s.size());
+				ConsoleIO.printLn(s.get(f));
 
-			final String input = ConsoleIO
-					.promptForInput("To continue press enter. Enter anything else to return to menu.", true);
-			if (!input.equals("")) {
-				ConsoleIO.printLn(cards.get(s[f]));
-			} else {
-				cont = false;
-			}
-		} while (cont);
-
+				final String input = ConsoleIO
+						.promptForInput("To continue press enter. Enter anything else to return to menu.", true);
+				if (input.equals("\n") || input.equals("")) {
+					ConsoleIO.printLn(cards.get(s.get(f)) + "\n");
+				} else {
+					cont = false;
+				}
+			} while (cont);
+		}
 	}
 
 	public static void run() {
@@ -117,13 +132,16 @@ public class Manager {
 
 	private static void saveCards() {
 		final String p = ConsoleIO.promptForInput("Enter a file path to save the cards to", false);
-		final String[] s = (String[]) cards.keySet().toArray();
-		final String[] f = (String[]) cards.values().toArray();
+		final ArrayList<String> s = new ArrayList<>();
+		cards.keySet().forEach(k -> s.add(k));
+
+		final ArrayList<String> f = new ArrayList<>();
+		cards.values().forEach(k -> f.add(k));
 
 		final StringBuilder b = new StringBuilder();
 
-		for (int i = 0; i < f.length; i++) {
-			b.append(s[i]).append(" :: ").append(f[i]).append("\n");
+		for (int i = 0; i < f.size(); i++) {
+			b.append(s.get(i)).append(" :: ").append(f.get(i)).append("\n");
 		}
 
 		Filer.writeToFile(p, b.toString());
